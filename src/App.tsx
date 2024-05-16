@@ -1,58 +1,81 @@
-import { useQuery } from "@tanstack/react-query"
-
-import { Button } from "./components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "./components/ui/card"
-import { Product } from "./types"
-import api from "./api"
-
 import "./App.css"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createContext, useState } from "react"
+import { Cart, Product } from "./types"
+import { Dashboard } from "./Pages/dashboard"
+import { Home } from "./Pages/home"
+import { Navbar } from "./components/navbar"
+import { stat } from "fs"
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />
+  },
+  {
+    path: "/Dashboard",
+    element: <Dashboard />
+  }
+])
+
+type GlobalContextType = {
+  state: GlobalState
+  handelAddCart: (product: Product) => void
+}
+
+type GlobalState = {
+  cart: Cart[]
+}
+
+export const GlobalContext = createContext<GlobalContextType | null>(null)
 
 function App() {
-  const getProducts = async () => {
-    try {
-      const res = await api.get("/products")
-      return res.data
-    } catch (error) {
-      console.error(error)
-      return Promise.reject(new Error("Something went wrong"))
-    }
-  }
-
-  // Queries
-  const { data, error } = useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: getProducts
+  const [state, setState] = useState<GlobalState>({
+    cart: []
   })
 
-  return (
-    <div className="App">
-      <h1 className="text-2xl uppercase mb-10">Products</h1>
+  const handelAddCart = (product: Product) => {
+    const isDuplicate = state.cart.find((cartItem) => cartItem.id === product.stockId)
 
-      <section className="flex flex-col md:flex-row gap-4 justify-between max-w-6xl mx-auto">
-        {data?.map((product) => (
-          <Card key={product.id} className="w-[350px]">
-            <CardHeader>
-              <CardTitle>{product.name}</CardTitle>
-              <CardDescription>Some Description here</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content Here</p>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full">Add to cart</Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </section>
-      {error && <p className="text-red-500">{error.message}</p>}
-    </div>
+    if (isDuplicate) {
+      console.log(isDuplicate)
+      const updatedCart = state.cart.map((cartItem) => {
+        console.log(cartItem)
+        if (cartItem.id === isDuplicate.id) {
+          console.log("INSIDE")
+          return {
+            ...cartItem,
+            itemQuantity: cartItem.itemQuantity + 1
+          }
+        }
+        return cartItem
+      })
+
+      setState({
+        ...state,
+        cart: updatedCart
+      })
+      return
+    }
+    const cartItem: Cart = {
+      id: product.stockId,
+      name: product.name,
+      itemQuantity: 1
+    }
+
+    setState({
+      ...state,
+      cart: [...state.cart, cartItem]
+    })
+  }
+  return (
+    <>
+      <div className="App">
+        <GlobalContext.Provider value={{ state, handelAddCart }}>
+          <RouterProvider router={router} />
+        </GlobalContext.Provider>
+      </div>
+    </>
   )
 }
 

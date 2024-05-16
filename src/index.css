@@ -74,3 +74,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components{
+  .menu-item{ 
+     @apply text-gray-100;
+
+    }
+
+svg{
+  @apply  text-gray-100 w-6 h-6;
+}}
