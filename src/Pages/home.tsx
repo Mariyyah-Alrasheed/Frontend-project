@@ -1,6 +1,7 @@
 import { GlobalContext } from "@/App"
 import api from "@/api"
 import { Navbar } from "@/components/navbar"
+import { Hero } from "@/components/hero/heroPage"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -13,6 +14,7 @@ import {
 import { Product } from "@/types"
 import { useQuery } from "@tanstack/react-query"
 import { useContext } from "react"
+import { AboutUs } from "./aboutUs"
 
 export function Home() {
   const context = useContext(GlobalContext)
@@ -41,6 +43,8 @@ export function Home() {
   return (
     <>
       <Navbar />
+      <Hero />
+      <AboutUs />
       <div className="App">
         <h1 className="text-2xl uppercase mb-10">Products</h1>
 
