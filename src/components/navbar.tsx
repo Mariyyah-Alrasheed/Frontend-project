@@ -5,7 +5,7 @@ import { CartDrawer } from "./cart/drawerCart"
 
 export function Navbar() {
   return (
-    <div className="bg-teal-950 sticky top-0 z-10">
+    <div className=" bg-amber-950 sticky top-0 z-10">
       <nav className="max-w-screen-xl mx-auto py-4 px-6 ">
         <div className="flex items-center justify-between">
           <div className="h-9">
