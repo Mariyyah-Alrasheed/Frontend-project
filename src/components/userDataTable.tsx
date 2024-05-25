@@ -32,25 +32,25 @@ import {
   TableRow
 } from "@/components/ui/table"
 import api from "@/api"
+import { User } from "@/types"
 
-export type Product = {
-  id: string
-  productId: string
-  name: string
-  categoryId: string
-  description: string
-  image: string
-}
-
-export function DataTableDemo({ products }) {
+export function UserDataTable({ users }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
-  const [productIds, setProductsIds] = useState<string[]>([])
-  console.log("productIds", productIds)
-  console.log("rowSelection", rowSelection)
-  const columns: ColumnDef<Product>[] = [
+  const [usersEmails, setUsersEmails] = useState<string[]>([])
+  console.log(usersEmails)
+
+  const handleAddEmail = (email: string) => {
+    setUsersEmails((prevState) => [...prevState, email])
+  }
+  const handleRemoveEmail = (email: string) => {
+    const filteredEmails = usersEmails.filter((uEmail) => uEmail !== email)
+
+    setUsersEmails(filteredEmails)
+  }
+  const columns: ColumnDef<User>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -67,7 +67,13 @@ export function DataTableDemo({ products }) {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
-            setProductsIds((prevState) => [...prevState, row.original.id])
+            console.log("value", value)
+            if (value) {
+              handleAddEmail(row.original.email)
+            } else {
+              handleRemoveEmail(row.original.email)
+            }
+
             row.toggleSelected(!!value)
           }}
           aria-label="Select row"
@@ -77,40 +83,24 @@ export function DataTableDemo({ products }) {
       enableHiding: false
     },
     {
-      accessorKey: "name",
-      header: "Name"
+      accessorKey: "fullName",
+      header: "Full name"
     },
     {
-      accessorKey: "categoryId",
-      header: "Category ID"
+      accessorKey: "email",
+      header: "Email"
     },
     {
-      accessorKey: "description",
-      header: "Description"
+      accessorKey: "countryCode",
+      header: "Country code"
     },
     {
-      accessorKey: "color",
-      header: "Color"
-    },
-    {
-      accessorKey: "quantity",
-      header: "Quantity"
-    },
-    {
-      accessorKey: "size",
-      header: "Size"
-    },
-    {
-      accessorKey: "id",
-      header: "Product Id"
-    },
-    {
-      accessorKey: "image",
-      header: "Image"
+      accessorKey: "phone",
+      header: "Phone"
     }
   ]
   const table = useReactTable({
-    data: products || [],
+    data: users || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -128,9 +118,9 @@ export function DataTableDemo({ products }) {
     }
   })
 
-  const deleteStock = async (stockId) => {
+  const deleteUser = async (email: string) => {
     try {
-      const res = await api.delete(`/stocks/:${stockId}`)
+      const res = await api.delete(`/users/${email}`)
       return res.data
     } catch (error) {
       console.error(error)
@@ -138,12 +128,9 @@ export function DataTableDemo({ products }) {
     }
   }
   const hanelDelete = async () => {
-    // const selectedRowIds = Object.keys(rowSelection)
-    // console.log("selectedRowIds", selectedRowIds)
-
-    await productIds.map((id) => deleteStock(id))
-    // const newData = products.filter((row) => !productIds.includes(row.id))
-    setProductsIds([])
+    usersEmails.map(async (email) => {
+      await deleteUser(email)
+    })
     setRowSelection({})
   }
   return (

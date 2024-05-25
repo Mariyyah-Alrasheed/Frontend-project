@@ -71,19 +71,40 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#EFEFEF] text-foreground;
   }
 }
-/* 
+
 .text-gradient{
-  background: linear-gradient(96deg,#ffffff 11.46%, #53b8d4 91.65%S);
+  background: linear-gradient(130deg,#205375 11.46%, #F66B0E 99.65%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-} */
+}
 
 
 
+@media (max-width: 640px) {
+  .form-container {
+    background-image: url('./components/hero/heroImage1.jpg');
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-size: cover;
+    background-position: center;
+  }
+}
+.form-container {
+  background-image: url('./components/hero/heroImage1.jpg');
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-size: cover;
+  background-position: center;
+}
 @layer components{
   .menu-item{ 
      @apply text-gray-100;
@@ -99,10 +120,25 @@ svg{
 }
 
 .primary-btn{
-  @apply h-11 bg-primary text-white text-sm px-6 rounded hover:bg-cyan-950 hover:text-primary;
+  @apply h-11 bg-[#F66B0E] text-[#112b3cc1] font-bold text-sm px-6 rounded hover:bg-[#205375] hover:text-primary;
 }
 }
 .about-Us{
   background-image: url('/src/components/hero/aboutUs2.png') ;
 }
+.about-Us {
+  display: flex;
+  align-items: center;
+}
+
+/* .about-image {
+  /* width: 200px; 
+  height: auto; 
+  margin-right: 20px; */
+
+
+.about-content {
+  flex: 1; /* Fill remaining space */
+}
+
 
