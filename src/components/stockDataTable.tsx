@@ -35,21 +35,29 @@ import api from "@/api"
 
 export type Product = {
   id: string
-  productId: string
+  stockId: string
   name: string
-  categoryId: string
+  categoryId: number
   description: string
   image: string
 }
 
-export function DataTableDemo({ products }) {
+export function StockDataTable({ products }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [productIds, setProductsIds] = useState<string[]>([])
-  console.log("productIds", productIds)
-  console.log("rowSelection", rowSelection)
+  console.log(productIds)
+
+  const handleAddId = (id: string) => {
+    setProductsIds((prevState) => [...prevState, id])
+  }
+  const handleRemoveId = (id: string) => {
+    const filteredId = productIds.filter((pId) => pId !== id)
+
+    setProductsIds(filteredId)
+  }
   const columns: ColumnDef<Product>[] = [
     {
       id: "select",
@@ -67,7 +75,13 @@ export function DataTableDemo({ products }) {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
-            setProductsIds((prevState) => [...prevState, row.original.id])
+            console.log("value", value)
+            if (value) {
+              handleAddId(row.original.stockId)
+            } else {
+              handleRemoveId(row.original.stockId)
+            }
+
             row.toggleSelected(!!value)
           }}
           aria-label="Select row"
@@ -101,8 +115,8 @@ export function DataTableDemo({ products }) {
       header: "Size"
     },
     {
-      accessorKey: "id",
-      header: "Product Id"
+      accessorKey: "stockId",
+      header: "StockId"
     },
     {
       accessorKey: "image",
@@ -128,9 +142,9 @@ export function DataTableDemo({ products }) {
     }
   })
 
-  const deleteStock = async (stockId) => {
+  const deleteStock = async (stockId: string) => {
     try {
-      const res = await api.delete(`/stocks/:${stockId}`)
+      const res = await api.delete(`/stocks/${stockId}`)
       return res.data
     } catch (error) {
       console.error(error)
@@ -138,16 +152,13 @@ export function DataTableDemo({ products }) {
     }
   }
   const hanelDelete = async () => {
-    // const selectedRowIds = Object.keys(rowSelection)
-    // console.log("selectedRowIds", selectedRowIds)
-
-    await productIds.map((id) => deleteStock(id))
-    // const newData = products.filter((row) => !productIds.includes(row.id))
-    setProductsIds([])
+    productIds.map(async (id) => {
+      await deleteStock(id)
+    })
     setRowSelection({})
   }
   return (
-    <div className="w-full">
+    <div className="w-full p-10">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter products in stock..."

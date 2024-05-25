@@ -13,50 +13,19 @@ import {
   DrawerTrigger
 } from "@/components/ui/drawer"
 import { GlobalContext } from "@/App"
-
-const cartItems = [
-  {
-    id: 1,
-    name: "Product A",
-    quantity: 5
-  },
-  {
-    id: 2,
-    name: "Product B",
-    quantity: 3
-  },
-  {
-    id: 3,
-    name: "Product C",
-    quantity: 7
-  }
-]
+import { it } from "node:test"
 
 export function CartDrawer() {
   const context = React.useContext(GlobalContext)
   if (!context) throw Error("Context is missing")
 
-  const { state } = context
+  const { state, handleDeleteFromCart } = context
 
   const [cart, setCart] = React.useState(state.cart)
-  if (state.cart.length > cart.length) {
+
+  React.useEffect(() => {
     setCart(state.cart)
-  }
-
-  console.log(cart)
-
-  function adjustQuantity(id: string, adjustment: number) {
-    const updatedCart = cart.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          itemQuantity: Math.max(1, item.itemQuantity + adjustment)
-        }
-      }
-      return item
-    })
-    setCart(updatedCart)
-  }
+  }, [state.cart])
 
   return (
     <Drawer>
@@ -67,6 +36,7 @@ export function CartDrawer() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -85,28 +55,18 @@ export function CartDrawer() {
             {cart.map((item) => (
               <div key={item.id} className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 shrink-0 rounded-full"
-                    onClick={() => adjustQuantity(item.id, -1)}
-                    disabled={item.itemQuantity <= 1}
-                  >
-                    <MinusIcon className="h-4 w-4" />
-                    <span className="sr-only">Decrease</span>
-                  </Button>
+                  <div className="text-lg">{item.itemQuantity}</div>
+
+                  <img src={item.image} className=" w-8"></img>
+
                   <div className="text-lg">{item.name}</div>
+                </div>{" "}
+                <div className="text-lg m-3">{item.price * item.itemQuantity}$</div>
+                <div className="text-lg">
+                  <Button variant="destructive" onClick={() => handleDeleteFromCart(item.id)}>
+                    -
+                  </Button>
                 </div>
-                <div className="text-lg">{item.itemQuantity}</div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 shrink-0 rounded-full"
-                  onClick={() => adjustQuantity(item.id, 1)}
-                >
-                  <PlusIcon className="h-4 w-4" />
-                  <span className="sr-only">Increase</span>
-                </Button>
               </div>
             ))}
           </div>

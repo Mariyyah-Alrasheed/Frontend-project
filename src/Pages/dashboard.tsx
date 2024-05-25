@@ -1,12 +1,14 @@
 import api from "@/api"
-import { DataTableDemo } from "@/components/DataTable"
+import { ProductDataTable } from "@/components/productDataTable"
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Category, Product, ProductWithCat } from "@/types"
+import { Category, Product, Stock, User } from "@/types"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { promises } from "dns"
 import { useState } from "react"
+import { StockDataTable } from "@/components/stockDataTable"
+import { UserDataTable } from "@/components/userDataTable"
 
 export function Dashboard() {
   const queryClient = useQueryClient()
@@ -58,6 +60,26 @@ export function Dashboard() {
     queryKey: ["products"],
     queryFn: getProducts
   })
+  const getUsers = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      const res = await api.get("/users", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      return res.data
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(new Error("Something went wrong"))
+    }
+  }
+
+  // Queries
+  const { data: users, error: userError } = useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: getUsers
+  })
 
   const getCategories = async () => {
     try {
@@ -73,6 +95,22 @@ export function Dashboard() {
   const { data: categories, error: catError } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: getCategories
+  })
+
+  const getStocks = async () => {
+    try {
+      const res = await api.get("/stocks")
+      return res.data
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(new Error("Something went wrong"))
+    }
+  }
+
+  // Queries
+  const { data: stocks, error: stocksError } = useQuery<Stock[]>({
+    queryKey: ["stocks"],
+    queryFn: getStocks
   })
 
   const categoriesIds = categories?.reduce((acc, cat) => {
@@ -95,6 +133,11 @@ export function Dashboard() {
     }
     return product
   })
+
+  const filteredProducts = productWithCat?.filter((product) =>
+    stocks?.some((stock) => stock.productId === product.id)
+  )
+
   return (
     <>
       <Navbar />
@@ -136,8 +179,16 @@ export function Dashboard() {
           <Button type="submit">Submit</Button>
         </div>
       </form>
+      {/* <h3>Stock</h3>
 
-      <DataTableDemo products={productWithCat} />
+      <StockDataTable products={filteredProducts} />
+
+      <h3>Products </h3>
+
+      <ProductDataTable products={productWithCat} />
+
+      <h3> Users </h3>
+      <UserDataTable users={users} /> */}
     </>
   )
 }

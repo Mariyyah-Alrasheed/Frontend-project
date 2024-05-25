@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { CaretSortIcon, ChevronDownIcon, DotsHorizontalIcon } from "@radix-ui/react-icons"
 import {
   ColumnDef,
@@ -35,21 +35,41 @@ import api from "@/api"
 
 export type Product = {
   id: string
-  productId: string
   name: string
-  categoryId: string
+  categoryId: number
   description: string
   image: string
+  stockId: string | null
 }
 
-export function DataTableDemo({ products }) {
+export function ProductDataTable({ products = [] }: { products?: Product[] }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [productIds, setProductsIds] = useState<string[]>([])
-  console.log("productIds", productIds)
-  console.log("rowSelection", rowSelection)
+
+  const handleAddId = (id: string) => {
+    setProductsIds((prevState) => [...prevState, id])
+  }
+
+  const handleRemoveId = (id: string) => {
+    const filteredId = productIds.filter((pId) => pId !== id)
+    setProductsIds(filteredId)
+  }
+
+  // Filter out duplicate products based on ID
+  const filteredProducts = useMemo(() => {
+    const seen = new Set()
+    return (products || []).filter((product) => {
+      if (seen.has(product.id)) {
+        return false
+      }
+      seen.add(product.id)
+      return true
+    })
+  }, [products])
+
   const columns: ColumnDef<Product>[] = [
     {
       id: "select",
@@ -67,7 +87,11 @@ export function DataTableDemo({ products }) {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
-            setProductsIds((prevState) => [...prevState, row.original.id])
+            if (value) {
+              handleAddId(row.original.id)
+            } else {
+              handleRemoveId(row.original.id)
+            }
             row.toggleSelected(!!value)
           }}
           aria-label="Select row"
@@ -89,28 +113,23 @@ export function DataTableDemo({ products }) {
       header: "Description"
     },
     {
-      accessorKey: "color",
-      header: "Color"
-    },
-    {
-      accessorKey: "quantity",
-      header: "Quantity"
-    },
-    {
-      accessorKey: "size",
-      header: "Size"
-    },
-    {
       accessorKey: "id",
       header: "Product Id"
     },
     {
+      accessorKey: "stockId",
+      header: "Stock",
+      cell: ({ row }) => (row.original.stockId ? "On stock" : "Out of stock")
+    },
+    {
       accessorKey: "image",
-      header: "Image"
+      header: "Image",
+      cell: ({ row }) => <img src={row.original.image} alt={row.original.name} className="h-20" />
     }
   ]
+
   const table = useReactTable({
-    data: products || [],
+    data: filteredProducts,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -128,34 +147,33 @@ export function DataTableDemo({ products }) {
     }
   })
 
-  const deleteStock = async (stockId) => {
+  const deleteProduct = async (productId: string) => {
     try {
-      const res = await api.delete(`/stocks/:${stockId}`)
+      const res = await api.delete(`/products/${productId}`)
       return res.data
     } catch (error) {
       console.error(error)
       return Promise.reject(new Error("Something went wrong"))
     }
   }
-  const hanelDelete = async () => {
-    // const selectedRowIds = Object.keys(rowSelection)
-    // console.log("selectedRowIds", selectedRowIds)
 
-    await productIds.map((id) => deleteStock(id))
-    // const newData = products.filter((row) => !productIds.includes(row.id))
-    setProductsIds([])
+  const handleDelete = async () => {
+    for (const id of productIds) {
+      await deleteProduct(id)
+    }
     setRowSelection({})
   }
+
   return (
-    <div className="w-full">
+    <div className="w-full p-10">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter products in stock..."
+          placeholder="Filter products..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
-        <Button onClick={hanelDelete}>Delete</Button>
+        <Button onClick={handleDelete}>Delete</Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -203,15 +221,10 @@ export function DataTableDemo({ products }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => {
-                    const component = cell.column.columnDef.cell
-                    const render =
-                      cell.column.id === "image" ? (
-                        <img className="h-20" alt="product" src={cell.getValue() as string} />
-                      ) : (
-                        component
-                      )
                     return (
-                      <TableCell key={cell.id}>{flexRender(render, cell.getContext())}</TableCell>
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
                     )
                   })}
                 </TableRow>
