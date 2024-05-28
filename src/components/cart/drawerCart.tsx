@@ -15,6 +15,7 @@ import {
 import { GlobalContext } from "@/App"
 import { Product } from "@/types"
 import api from "@/api"
+import { Link } from "react-router-dom"
 
 export function CartDrawer() {
   const context = React.useContext(GlobalContext)
@@ -135,7 +136,9 @@ export function CartDrawer() {
             <div className="flex justify-between w-full">
               <div className="text-lg font-semibold">Total: {total}$</div>
               <div>
-                <Button onClick={handleCheckout}>Checkout</Button>
+                <Button>
+                  <Link to="/checkout">Checkout</Link>
+                </Button>
                 <DrawerClose asChild>
                   <Button variant="outline">Close</Button>
                 </DrawerClose>

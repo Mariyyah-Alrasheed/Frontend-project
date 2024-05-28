@@ -55,4 +55,12 @@ export type DecodedUser = {
   role: keyof typeof ROLE
 }
 
+export type Address = {
+  country: string
+  city: string
+  streetName: string
+  postalCode: number
+  zipCode: number
+}
+
 

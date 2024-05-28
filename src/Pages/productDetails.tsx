@@ -9,6 +9,7 @@ import Select from "react-select"
 import { GlobalContext } from "@/App"
 import { Button } from "@/components/ui/button" // Make sure you have this import
 import { CandyCaneIcon, CheckIcon, HandIcon, VeganIcon } from "lucide-react"
+import { Checkout } from "./checkout"
 
 export function ProductDetails() {
   const context = React.useContext(GlobalContext)
@@ -88,6 +89,7 @@ export function ProductDetails() {
     <>
       <div className=" bg-[#EFEFEF] md:p-10 lg:p-16">
         <Navbar />
+        <Checkout />
 
         <section className=" m-10 grid md:grid-cols-2 gap-8 max-w-6xl mx-auto py-28 md:py-20">
           <div className="flex flex-col gap-6">

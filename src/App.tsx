@@ -17,6 +17,8 @@ import { StockForDashboard } from "./Pages/dashboardComponent.tsx/stock"
 import { ProductDashboard } from "./Pages/dashboardComponent.tsx/product"
 import { CustomerDashboard } from "./Pages/dashboardComponent.tsx/customer"
 import { OrderDashboard } from "./Pages/dashboardComponent.tsx/order"
+import { Checkout } from "./Pages/checkout"
+import { Thankyou } from "./Pages/thankyou"
 
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
   {
     path: "/SignUp",
     element: <Signup />
+  },
+  {
+    path: "/Checkout",
+    element: <Checkout />
+  },
+  {
+    path: "/Thankyou",
+    element: <Thankyou />
   },
   {
     path: "/Dash2",
