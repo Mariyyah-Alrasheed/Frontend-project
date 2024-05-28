@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -67,16 +68,16 @@
 }
 
 @layer base {
-  * {
+  /* * {
     @apply border-border;
-  }
+  } */
   body {
-    @apply bg-[#EFEFEF] text-foreground;
+    @apply bg-[#140802] text-foreground;
   }
 }
 
 .text-gradient{
-  background: linear-gradient(130deg,#205375 11.46%, #F66B0E 99.65%);
+  background: linear-gradient(130deg,#FFFFFF 11.46%,#765C43  99.65%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -106,17 +107,16 @@
   background-position: center;
 }
 @layer components{
-  .menu-item{ 
-     @apply text-gray-100;
-
-    }
+  .menu-item { 
+  @apply text-[#BD9E82]  hover:text-[#BD9E82] 
+  }
 
 svg{
   @apply  text-gray-100 w-6 h-6;
 }
 
 .hero-img{
-  @apply w-1/3 h-5/6 md:w-1/3 md:h-60 lg:h-60 lg:w-3/4 p-1 bg-gray-200;
+  @apply w-1/3 h-5/6 md:w-1/3 md:h-60 lg:h-60 lg:w-3/4 p-1 bg-[#BD9E82];
 }
 
 .primary-btn{
@@ -141,4 +141,29 @@ svg{
   flex: 1; /* Fill remaining space */
 }
 
+
+.menu-item {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* .menu-item:hover {
+  color: #0070f3; /* Example hover color */
+
+/* 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 2rem;
+  text-align: center;
+} */
+ 
 
