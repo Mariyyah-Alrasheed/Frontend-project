@@ -9,7 +9,7 @@ export function Login() {
   const navigate = useNavigate()
   const context = useContext(GlobalContext)
   if (!context) throw Error("Context is missing")
-  const { handleStoreUser } = context
+  const { state, handleStoreUser } = context
 
   const [user, setUser] = useState({
     email: "",
@@ -47,6 +47,10 @@ export function Login() {
       localStorage.setItem("user", JSON.stringify(user))
 
       handleStoreUser(user)
+
+      if (state.user?.role === "Admin") {
+        navigate("/Dash2")
+      }
       navigate("/")
     }
   }

@@ -134,10 +134,10 @@ export function UserDataTable({ users }) {
     setRowSelection({})
   }
   return (
-    <div className="w-full">
+    <div className="w-full p-10">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter products in stock..."
+          placeholder="Filter user ..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
           className="max-w-sm"

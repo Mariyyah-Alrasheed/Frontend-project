@@ -13,19 +13,82 @@ import {
   DrawerTrigger
 } from "@/components/ui/drawer"
 import { GlobalContext } from "@/App"
-import { it } from "node:test"
+import { Product } from "@/types"
+import api from "@/api"
 
 export function CartDrawer() {
   const context = React.useContext(GlobalContext)
   if (!context) throw Error("Context is missing")
 
-  const { state, handleDeleteFromCart } = context
+  const { state, handleDeleteFromCart, handleRemoveCart } = context
 
   const [cart, setCart] = React.useState(state.cart)
+  const [total, setTotal] = React.useState(0)
+
+  type OrderItem = {
+    stockId: string
+    quantity: number
+  }
+
+  type OrderCheckout = [OrderItem[]]
+
+  // const groups = state.cart.reduce((acc, obj) => {
+  //   const key = obj.id
+  //   const curGroup = acc[key] ?? []
+  //   return { ...acc, [key]: [...curGroup, obj] }
+  // }, {} as { [productId: string]: Product[] })
+
+  const checkoutOrder: OrderItem[] = []
+
+  // Object.keys(groups).forEach((key) => {
+  //   const products = groups[key]
+
+  //   checkoutOrder.items.push({
+  //     quantity: products.length,
+  //     productId: key
+  //   })
+  // })
+
+  // checkoutOrder.items.push({
+  //       quantity: products.length,
+  //       productId: key
+  //     })
+
+  const handleCheckout = async () => {
+    try {
+      state.cart.map((item) => {
+        checkoutOrder.push({
+          stockId: item.id,
+          quantity: item.itemQuantity
+        })
+      })
+
+      const token = localStorage.getItem("token")
+      const res = await api.post("/orders/checkout", checkoutOrder, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (res.status === 201) {
+        handleRemoveCart()
+      }
+      return res.data
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(new Error("Something went wrong"))
+    }
+  }
 
   React.useEffect(() => {
     setCart(state.cart)
+
+    // Calculate total price
+    const totalPrice = state.cart.reduce((acc, item) => {
+      return acc + item.price * item.itemQuantity
+    }, 0)
+    setTotal(totalPrice)
   }, [state.cart])
+  console.log("state ", state.cart)
 
   return (
     <Drawer>
@@ -35,7 +98,7 @@ export function CartDrawer() {
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          stroke="currentColor"
+          stroke="#BD9E82"
           className="h-6 w-6"
         >
           <path
@@ -56,11 +119,9 @@ export function CartDrawer() {
               <div key={item.id} className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
                   <div className="text-lg">{item.itemQuantity}</div>
-
-                  <img src={item.image} className=" w-8"></img>
-
+                  <img src={item.image} className="w-8" alt={item.name} />
                   <div className="text-lg">{item.name}</div>
-                </div>{" "}
+                </div>
                 <div className="text-lg m-3">{item.price * item.itemQuantity}$</div>
                 <div className="text-lg">
                   <Button variant="destructive" onClick={() => handleDeleteFromCart(item.id)}>
@@ -71,10 +132,15 @@ export function CartDrawer() {
             ))}
           </div>
           <DrawerFooter>
-            <Button>Checkout</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Close</Button>
-            </DrawerClose>
+            <div className="flex justify-between w-full">
+              <div className="text-lg font-semibold">Total: {total}$</div>
+              <div>
+                <Button onClick={handleCheckout}>Checkout</Button>
+                <DrawerClose asChild>
+                  <Button variant="outline">Close</Button>
+                </DrawerClose>
+              </div>
+            </div>
           </DrawerFooter>
         </div>
       </DrawerContent>

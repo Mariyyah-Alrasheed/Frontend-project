@@ -25,6 +25,13 @@ export type User = {
   phone: string,
   role:string
 }
+export type Order = {
+  addressId: string
+  userId: string,
+  totalAmount: number,
+  orderDate: string,
+  paymentId: string
+}
 export type Stock = {
   
   productId: string

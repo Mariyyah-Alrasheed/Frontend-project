@@ -13,6 +13,10 @@ import { TestDashboard } from "./Pages/testDashboard"
 import { ProductDataTable } from "./components/productDataTable"
 import { UserDataTable } from "./components/userDataTable"
 import { ProductDetails } from "./Pages/productDetails"
+import { StockForDashboard } from "./Pages/dashboardComponent.tsx/stock"
+import { ProductDashboard } from "./Pages/dashboardComponent.tsx/product"
+import { CustomerDashboard } from "./Pages/dashboardComponent.tsx/customer"
+import { OrderDashboard } from "./Pages/dashboardComponent.tsx/order"
 
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
@@ -31,16 +35,22 @@ const router = createBrowserRouter([
   {
     path: "/Dash2",
     element: <TestDashboard />
-    // children: [
-    //   {
-    //     path: "/Dash2/products",
-    //     element: <ProductDataTable /> // Make sure to pass the `products` prop correctly
-    //   },
-    //   {
-    //     path: "/Dash2/customers",
-    //     element: <UserDataTable users /> // Make sure to pass the `products` prop correctly
-    //   }
-    // ]
+  },
+  {
+    path: "/dash2/stocks",
+    element: <StockForDashboard />
+  },
+  {
+    path: "/dash2/users",
+    element: <CustomerDashboard />
+  },
+  {
+    path: "/dash2/orders",
+    element: <OrderDashboard />
+  },
+  {
+    path: "/dash2/products",
+    element: <ProductDashboard />
   },
   {
     path: "/Dashboard",
@@ -61,6 +71,8 @@ type GlobalContextType = {
   handelAddCart: (product: Product) => void
   handleStoreUser: (user: DecodedUser) => void
   handleDeleteFromCart: (id: string) => void
+  handleRemoveCart: () => void
+  handleRemoveUser: () => void
 }
 
 type GlobalState = {
@@ -135,11 +147,32 @@ function App() {
       user
     })
   }
+
+  const handleRemoveUser = () => {
+    setState({
+      ...state,
+      user: null
+    })
+  }
+
+  const handleRemoveCart = () => {
+    setState({
+      ...state,
+      cart: []
+    })
+  }
   return (
     <>
       <div className="App">
         <GlobalContext.Provider
-          value={{ state, handelAddCart, handleStoreUser, handleDeleteFromCart }}
+          value={{
+            state,
+            handelAddCart,
+            handleStoreUser,
+            handleDeleteFromCart,
+            handleRemoveCart,
+            handleRemoveUser
+          }}
         >
           <RouterProvider router={router} />
         </GlobalContext.Provider>
