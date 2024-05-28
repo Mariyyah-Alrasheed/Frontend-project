@@ -51,7 +51,7 @@ export function Navbar() {
               <a href="about-Us">Special offers</a>
             </li>
             <li>
-              <a className="menu-item" href="/">
+              <a className="menu-item" href="#chocolate">
                 Chocolate shop
               </a>
             </li>

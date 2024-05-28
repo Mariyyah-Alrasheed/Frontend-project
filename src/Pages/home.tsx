@@ -90,65 +90,73 @@ export function Home() {
       {/* <ProductDetails /> */}
       <div className="App">
         {categories?.map((cat) => (
-          <div
-            className="flex flex-wrap w-1/3 gap-2 mx-auto items-center justify-center"
-            key={cat.id}
-          >
-            {products &&
-              products.some((product) => product.id && product.categoryId === cat.id) && (
-                <>
-                  <h1 className="text-3xl lg:text-5xl font-extrabold font-serif  uppercase mb-16 p-5 text-[#FFDAB9]">
-                    {cat.name}
-                  </h1>
-                  {[
-                    ...new Map(
-                      products
-                        .filter((product) => product.categoryId === cat.id)
-                        .map((filteredProduct) => [filteredProduct.id, filteredProduct])
-                    ).values()
-                  ].map((uniqueProduct) => (
-                    <>
-                      <div className="flex">
-                        <Card className="w-[250px] bg-[#140802] ">
-                          <Link to={`/products/${uniqueProduct.id}`}>
-                            <img
-                              alt={uniqueProduct.name}
-                              className="aspect-[4/3] w-full rounded-t-lg object-cover "
-                              height={300}
-                              src={uniqueProduct.image}
-                              width={400}
-                            />
-                            <CardContent className="p-4">
-                              <div className="space-y-2">
-                                <CardTitle className="text-lg font-semibold text-[#BD9E82]">
-                                  {uniqueProduct.name}
-                                </CardTitle>
-                                <p className="text-sm text-[#FFDAB9] dark:text-gray-400">
-                                  {uniqueProduct.description}
-                                </p>
-                              </div>
+          <>
+            <h1 className="text-3xl lg:text-5xl font-extrabold font-serif  uppercase mb-16 p-5 text-[#FFDAB9]">
+              {cat.name}
+            </h1>
+            <div
+              className="flex flex-wrap w-full gap-2 mx-auto items-center justify-center"
+              key={cat.id}
+              id="chocolate"
+            >
+              {products &&
+                products.some((product) => product.id && product.categoryId === cat.id) && (
+                  <>
+                    {[
+                      ...new Map(
+                        products
+                          .filter((product) => product.categoryId === cat.id)
+                          .map((filteredProduct) => [filteredProduct.id, filteredProduct])
+                      ).values()
+                    ].map((uniqueProduct) => (
+                      <>
+                        <div className="flex">
+                          <Card className="flex flex-col w-[250px] h-[450px] bg-[#140802] ">
+                            <Link to={`/products/${uniqueProduct.id}`}>
+                              <img
+                                alt={uniqueProduct.name}
+                                className="aspect-[4/3] w-full rounded-t-lg object-cover "
+                                height={300}
+                                src={uniqueProduct.image}
+                                width={400}
+                              />
+                              <CardContent className="p-4">
+                                <div className="space-y-2">
+                                  <CardTitle className="text-lg font-semibold text-[#BD9E82] h-[50px]">
+                                    {uniqueProduct.name}
+                                  </CardTitle>
+                                  <p className="text-sm text-[#FFDAB9] dark:text-gray-400">
+                                    {uniqueProduct.description}
+                                  </p>
+                                </div>
 
-                              <span className="font-semibold text-lg">{uniqueProduct.price}$</span>
-                            </CardContent>
-                          </Link>
-                          <CardFooter>
-                            <Button className="w-full" onClick={() => handelAddCart(uniqueProduct)}>
-                              Add to cart
-                            </Button>
-                          </CardFooter>
-                        </Card>
-                      </div>
-                    </>
-                  ))}
-                </>
-              )}
-          </div>
+                                <span className="font-semibold text-lg text-[#EEEE]">
+                                  {uniqueProduct.price}$
+                                </span>
+                              </CardContent>
+                            </Link>
+                            <CardFooter className="mt-auto">
+                              <Button
+                                className="w-full self-end mt-auto pb-2"
+                                onClick={() => handelAddCart(uniqueProduct)}
+                              >
+                                Add to cart
+                              </Button>
+                            </CardFooter>
+                          </Card>
+                        </div>
+                      </>
+                    ))}
+                  </>
+                )}
+            </div>
+          </>
         ))}
 
         {error && <p className="text-red-500">{error.message}</p>}
       </div>
 
-      <footer className="bg-[#8B4513] p-6 md:py-8 w-full dark:bg-[#5C3317]">
+      <footer className="bg-[#BD9E82] p-6 md:py-8 w-full dark:bg-[#BD9E82]">
         <div className="container max-w-7xl flex flex-col items-center justify-between gap-4 md:flex-row md:gap-6">
           <div className="flex items-center gap-2">
             <Link className="flex items-center" to="#">
