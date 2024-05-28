@@ -131,11 +131,11 @@ svg{
   align-items: center;
 }
 
-/* .about-image {
-  /* width: 200px; 
+.about-image {
+width: 1/4; 
   height: auto; 
-  margin-right: 20px; */
-
+  margin-right: 20px;
+  /* 
 
 .about-content {
   flex: 1; /* Fill remaining space */
