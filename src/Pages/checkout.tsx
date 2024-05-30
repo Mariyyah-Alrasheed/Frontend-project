@@ -12,6 +12,7 @@ import { Address } from "@/types"
 import { GlobalContext } from "@/App"
 import React from "react"
 import { Navbar } from "@/components/navbar"
+import { ToastContainer, toast } from "react-toastify"
 
 export function Checkout() {
   const navigate = useNavigate()
@@ -102,6 +103,7 @@ export function Checkout() {
     e.preventDefault()
 
     await postAddress()
+    toast("Address added successfully")
     queryClient.invalidateQueries({ queryKey: ["addresss"] })
   }
 
@@ -297,6 +299,7 @@ export function Checkout() {
             >
               Add address
             </Button>
+            <ToastContainer />
           </form>
         </div>
 

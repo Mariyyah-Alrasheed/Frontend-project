@@ -120,9 +120,14 @@ export function OrderDataTable({ orders }) {
     }
   })
 
-  const deleteOrder = async (orderId: string) => {
+  const deleteOrder = async (id: string) => {
+    const token = localStorage.getItem("token")
     try {
-      const res = await api.delete(`/orders/${orderId}`)
+      const res = await api.delete(`/orders/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       return res.data
     } catch (error) {
       console.error(error)
