@@ -18,13 +18,14 @@ import { AboutUs } from "./aboutUs"
 import { Link } from "react-router-dom"
 import { ProductDetails } from "./productDetails"
 import { SonnerDemo } from "@/components/sonner"
-import { toast } from "sonner"
 import { Hero2 } from "@/components/hero/hero2"
 import { GithubIcon, LinkedinIcon, MountainIcon, TwitterIcon } from "lucide-react"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
-export const showToast = (message, action) => {
-  toast(message, action)
-}
+// export const showToast = (message, action) => {
+//   toast(message, action)
+// }
 
 export function Home() {
   const context = useContext(GlobalContext)
@@ -79,6 +80,10 @@ export function Home() {
     queryKey: ["stocks"],
     queryFn: getStocks
   })
+  const handleClick = () => {
+    console.log("toastify button")
+    toast("Hello from container 1!")
+  }
 
   return (
     <>
@@ -86,6 +91,8 @@ export function Home() {
       <Hero2 />
       <Hero />
       <AboutUs />
+
+      <Button onClick={handleClick}>Show Toast</Button>
 
       {/* <ProductDetails /> */}
       <div className="App">
@@ -111,7 +118,7 @@ export function Home() {
                     ].map((uniqueProduct) => (
                       <>
                         <div className="flex">
-                          <Card className="flex flex-col w-[250px] h-[450px] bg-[#140802] ">
+                          <Card className="card flex flex-col w-[250px] h-[450px] bg-[#140802] ">
                             <Link to={`/products/${uniqueProduct.id}`}>
                               <img
                                 alt={uniqueProduct.name}
@@ -126,7 +133,7 @@ export function Home() {
                                     {uniqueProduct.name}
                                   </CardTitle>
                                   <p className="text-sm text-[#FFDAB9] dark:text-gray-400">
-                                    {uniqueProduct.description}
+                                    {uniqueProduct.description.slice(0, 30)}
                                   </p>
                                 </div>
 
@@ -142,6 +149,7 @@ export function Home() {
                               >
                                 Add to cart
                               </Button>
+                              <ToastContainer />
                             </CardFooter>
                           </Card>
                         </div>

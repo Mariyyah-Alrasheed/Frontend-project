@@ -1,4 +1,5 @@
 import api from "@/api"
+import { Navbar } from "@/components/navbar"
 import { ChangeEvent, FormEvent, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -40,6 +41,7 @@ export function Signup() {
 
   return (
     <>
+      <Navbar />
       <div className="bg-[#533218]  bg-opacity-50  lg:p-20">
         <section className=" min-h-screen flex items-center justify-center">
           <div className="form-container flex  items-center justify-center rounded-3xl shadow-lg max-w-2xl p-5">

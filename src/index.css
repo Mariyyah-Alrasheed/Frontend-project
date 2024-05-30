@@ -116,7 +116,7 @@ svg{
 }
 
 .hero-img{
-  @apply w-1/3 h-5/6 md:w-1/3 md:h-60 lg:h-60 lg:w-3/4 p-1 bg-[#BD9E82];
+  @apply w-1/3 h-5/6 md:w-1/3 md:h-60 lg:h-80 lg:w-3/4 p-1 bg-[#BD9E82];
 }
 
 .primary-btn{
@@ -141,10 +141,41 @@ width: 1/4;
   flex: 1; /* Fill remaining space */
 }
 
+.card:hover {
+  /* background-color: #000000;
+  margin: 18px;
+  padding: 18px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center; */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px #705142a2;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
 
 .menu-item {
   text-decoration: none;
   color: inherit;
+}
+
+.Toastify__toast {
+  background-color: rgba(83, 50, 24, 0.9);
+  color: white;
+  font-family: 'Arial', sans-serif;
+  border-radius: 5px;
+  padding: 16px;
+}
+
+.Toastify__toast--success {
+  background-color: rgba(40, 167, 69, 0.9);
+}
+
+.Toastify__toast--error {
+  background-color: rgba(220, 53, 69, 0.9);
+}
+
+.Toastify__close-button {
+  color: white;
 }
 
 /* .menu-item:hover {

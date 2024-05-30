@@ -40,10 +40,10 @@ export function Navbar() {
   }
 
   return (
-    <div className=" bg-opacity-0 -mt-40 sticky top-0 z-10">
-      <nav className="max-w-screen-xl mx-auto py-4 px-6 flex items-center justify-between">
+    <div className="backdrop-blur-lg bg-opacity-30 -mt-40 sticky top-0 z-10">
+      <nav className="max-w-screen-xl mx-auto py-4 px-6 flex items-center justify-between backdrop-filter backdrop-blur-lg">
         <div className="flex items-center space-x-4">
-          <div className=" h-14">
+          <div className="h-14">
             <img src={logo} alt="logo" className="h-full w-auto object-contain" />
           </div>
           <ul className="hidden md:flex md:gap-14 text-[#BD9E82] font-extralight text-xl">

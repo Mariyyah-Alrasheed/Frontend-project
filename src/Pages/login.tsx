@@ -4,6 +4,7 @@ import jwt from "jwt-decode"
 import { ChangeEvent, FormEvent, useContext, useState } from "react"
 import { GlobalContext } from "@/App"
 import { reshapeUser } from "@/lib/utils"
+import { Navbar } from "@/components/navbar"
 
 export function Login() {
   const navigate = useNavigate()
@@ -57,8 +58,9 @@ export function Login() {
 
   return (
     <>
-      <div className=" bg-[#533218]  bg-opacity-50  lg:p-20">
-        <section className=" min-h-screen flex items-center justify-center">
+      <Navbar />
+      <div className=" bg-[#533218] backdrop-blur-lg backdrop-filter bg-opacity-50 mt-40  lg:p-20">
+        <section className="min-h-screen flex items-center justify-center">
           <div className="form-container w-1/2 flex  items-center justify-center rounded-3xl shadow-lg max-w-2xl p-5">
             <div className=" w-full sm:w-3/4 px-16 text-white p-8 rounded">
               <div className=" bg-amber-950  bg-opacity-50 p-8 rounded">

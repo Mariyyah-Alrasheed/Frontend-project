@@ -199,7 +199,7 @@ export function ProductDataTable({ products = [] }: { products?: Product[] }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border border-solid">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

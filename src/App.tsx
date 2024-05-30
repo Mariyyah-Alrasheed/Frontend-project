@@ -1,6 +1,6 @@
 import "./App.css"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { Cart, DecodedUser, Product } from "./types"
 import { Dashboard } from "./Pages/dashboard"
 import { Home } from "./Pages/home"
@@ -13,12 +13,14 @@ import { TestDashboard } from "./Pages/testDashboard"
 import { ProductDataTable } from "./components/productDataTable"
 import { UserDataTable } from "./components/userDataTable"
 import { ProductDetails } from "./Pages/productDetails"
-import { StockForDashboard } from "./Pages/dashboardComponent.tsx/stock"
-import { ProductDashboard } from "./Pages/dashboardComponent.tsx/product"
-import { CustomerDashboard } from "./Pages/dashboardComponent.tsx/customer"
-import { OrderDashboard } from "./Pages/dashboardComponent.tsx/order"
+import { StockForDashboard } from "./Pages/dashboardComponent/stock"
+import { ProductDashboard } from "./Pages/dashboardComponent/product"
+import { CustomerDashboard } from "./Pages/dashboardComponent/customer"
+import { OrderDashboard } from "./Pages/dashboardComponent/order"
 import { Checkout } from "./Pages/checkout"
 import { Thankyou } from "./Pages/thankyou"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
@@ -97,6 +99,16 @@ function App() {
     cart: [],
     user: null
   })
+  useEffect(() => {
+    const user = localStorage.getItem("user")
+    if (user) {
+      const decodedUser = JSON.parse(user)
+      setState({
+        ...state,
+        user: decodedUser
+      })
+    }
+  }, [])
 
   const handleDeleteFromCart = (id) => {
     const updatedCart = state.cart
@@ -149,6 +161,7 @@ function App() {
       ...state,
       cart: [...state.cart, cartItem]
     })
+    toast("Item added to cart")
   }
 
   const handleStoreUser = (user: DecodedUser) => {
@@ -170,6 +183,8 @@ function App() {
       ...state,
       cart: []
     })
+
+    toast("Hello, world!")
   }
   return (
     <>
