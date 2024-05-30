@@ -44,7 +44,9 @@ export function Navbar() {
       <nav className="max-w-screen-xl mx-auto py-4 px-6 flex items-center justify-between backdrop-filter backdrop-blur-lg">
         <div className="flex items-center space-x-4">
           <div className="h-14">
-            <img src={logo} alt="logo" className="h-full w-auto object-contain" />
+            <a href={"/"}>
+              <img src={logo} alt="logo" className="h-full w-auto object-contain" />
+            </a>
           </div>
           <ul className="hidden md:flex md:gap-14 text-[#BD9E82] font-extralight text-xl">
             <li>
