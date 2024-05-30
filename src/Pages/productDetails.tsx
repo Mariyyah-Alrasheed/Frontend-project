@@ -90,11 +90,11 @@ export function ProductDetails() {
     <>
       <div className="   md:p-10 lg:p-16">
         <Navbar />
-        <Card className=" lg:p-24  bg-[#140802ea] mt-16">
-          <section className=" m-10 grid md:grid-cols-2 gap-8 max-w-6xl mx-auto py-28 md:py-20">
-            <div className="flex flex-col gap-6">
+        <Card className=" lg:p-16  bg-[#140802ea] lg:mt-8">
+          <section className=" md:m-10 grid md:grid-cols-2 gap-8 max-w-6xl mx-auto  md:py-20">
+            <div className="flex flex-col gap-6 items-center">
               <img
-                className=" w-1/4 rounded-lg overflow-hidden aspect-square object-cover lg:w-3/4"
+                className=" w-3/4 md:2/3 rounded-lg overflow-hidden aspect-square object-cover lg:w-3/4"
                 src={product.image}
                 alt={product.name}
                 width={600}
@@ -103,15 +103,15 @@ export function ProductDetails() {
             </div>
             <div className="grid gap-4">
               <div>
-                <h2 className="text-xl md:text-6xl lg:text-6xl  text-[#EFEFEF] font-bold">
+                <h2 className="text-xl md:text-6xl lg:text-6xl font-serif  text-[#EFEFEF] font-bold">
                   {product.name}
                 </h2>
 
-                <p className="text-[#EFEFEF] mt-6 dark:text-[#EFEFEF] text-m lg:text-l">
+                <p className="text-[#EFEFEF] mt-6 dark:text-[#EFEFEF] text-xs md:text-xl">
                   {product.description}
                 </p>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 justify-center">
                 <label
                   htmlFor="stockId"
                   className="block mb-2 text-m md:text-l lg:text-lg font-semibold text-[#EFEFEF]"
@@ -140,7 +140,7 @@ export function ProductDetails() {
                   <p className="text-[#EFEFEF]">
                     <strong>Price:</strong> {selectedStock.price}$
                   </p>
-                  <Button className="w-full" onClick={() => handelAddCart(selectedStock)}>
+                  <Button className="lg:w-full m-3" onClick={() => handelAddCart(selectedStock)}>
                     Add to cart
                   </Button>
                   <ToastContainer />
