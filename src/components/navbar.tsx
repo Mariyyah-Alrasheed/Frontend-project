@@ -40,7 +40,7 @@ export function Navbar() {
   }
 
   return (
-    <div className="backdrop-blur-lg bg-opacity-30 -mt-40 sticky top-0 z-10">
+    <div className="backdrop-blur-lg bg-opacity-30 -mt-30 md:-mt-40 lg:-mt-40 sticky top-0 z-10">
       <nav className="max-w-screen-xl mx-auto py-4 px-6 flex items-center justify-between backdrop-filter backdrop-blur-lg">
         <div className="flex items-center space-x-4">
           <div className="h-14">
@@ -65,7 +65,7 @@ export function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="#BD9E82"
-              className="w-6 h-6"
+              className="w-3 h-3 md:w-6 md:h-6"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
             </svg>
@@ -80,7 +80,7 @@ export function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="#BD9E82"
-              className="w-6 h-6"
+              className="w-3 h-3 md:w-6 md:h-6"
             >
               <path
                 strokeLinecap="round"
@@ -98,7 +98,7 @@ export function Navbar() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="#BD9E82"
-                  className="w-6 h-6"
+                  className="w-3 h-3 md:w-6 md:h-6"
                 >
                   <path
                     strokeLinecap="round"

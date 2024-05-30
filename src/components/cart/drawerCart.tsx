@@ -100,7 +100,7 @@ export function CartDrawer() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="#BD9E82"
-          className="h-6 w-6"
+          className="w-3 h-3 md:w-6 md:h-6"
         >
           <path
             strokeLinecap="round"

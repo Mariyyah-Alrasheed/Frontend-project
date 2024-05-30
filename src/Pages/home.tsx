@@ -92,13 +92,10 @@ export function Home() {
       <Hero />
       <AboutUs />
 
-      <Button onClick={handleClick}>Show Toast</Button>
-
-      {/* <ProductDetails /> */}
       <div className="App">
         {categories?.map((cat) => (
           <>
-            <h1 className="text-3xl lg:text-5xl font-extrabold font-serif  uppercase mb-16 p-5 text-[#FFDAB9]">
+            <h1 className="text-xl md:text-3xl lg:text-5xl font-extrabold font-serif  uppercase mb-16 p-5 text-[#FFDAB9]">
               {cat.name}
             </h1>
             <div

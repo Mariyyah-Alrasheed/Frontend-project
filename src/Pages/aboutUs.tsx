@@ -9,7 +9,7 @@ export const AboutUs = () => {
           className="w-1/2 text-center md:w-full about-image bg-[#BD9E82]"
         />
         <div className="about-content">
-          <p className="text-m font-bold text-gradient mb-3 md:text-l md:leading-[2rem] lg:text-xl lg:leading-[2rem] p-10">
+          <p className=" text-sm md:text-m font-bold text-gradient mb-3 md:text-l md:leading-[2rem] lg:text-xl lg:leading-[2rem] p-10">
             Welcome to Lion Chocolates, where bold flavors and exquisite craftsmanship meet. Indulge
             in our luxurious range of chocolates, crafted with passion and precision to deliver an
             unforgettable taste experience.
