@@ -17,7 +17,7 @@ import { useContext } from "react"
 import { AboutUs } from "./aboutUs"
 import { Link } from "react-router-dom"
 import { ProductDetails } from "./productDetails"
-import { SonnerDemo } from "@/components/sonner"
+// import { SonnerDemo } from "@/components/sonner"
 import { Hero2 } from "@/components/hero/hero2"
 import { GithubIcon, LinkedinIcon, MountainIcon, TwitterIcon } from "lucide-react"
 import { toast, ToastContainer } from "react-toastify"
@@ -80,10 +80,6 @@ export function Home() {
     queryKey: ["stocks"],
     queryFn: getStocks
   })
-  const handleClick = () => {
-    console.log("toastify button")
-    toast("Hello from container 1!")
-  }
 
   return (
     <>
@@ -103,57 +99,68 @@ export function Home() {
               key={cat.id}
               id="chocolate"
             >
-              {products &&
-                products.some((product) => product.id && product.categoryId === cat.id) && (
-                  <>
-                    {[
-                      ...new Map(
-                        products
-                          .filter((product) => product.categoryId === cat.id)
-                          .map((filteredProduct) => [filteredProduct.id, filteredProduct])
-                      ).values()
-                    ].map((uniqueProduct) => (
-                      <>
-                        <div className="flex">
-                          <Card className="card flex flex-col w-[250px] h-[450px] bg-[#140802] ">
-                            <Link to={`/products/${uniqueProduct.id}`}>
-                              <img
-                                alt={uniqueProduct.name}
-                                className="aspect-[4/3] w-full rounded-t-lg object-cover "
-                                height={300}
-                                src={uniqueProduct.image}
-                                width={400}
-                              />
-                              <CardContent className="p-4">
-                                <div className="space-y-2">
-                                  <CardTitle className="text-lg font-semibold text-[#BD9E82] h-[50px]">
-                                    {uniqueProduct.name}
-                                  </CardTitle>
-                                  <p className="text-sm text-[#FFDAB9] dark:text-gray-400">
-                                    {uniqueProduct.description.slice(0, 30)}
-                                  </p>
-                                </div>
-
-                                <span className="font-semibold text-lg text-[#EEEE]">
-                                  {uniqueProduct.price}$
-                                </span>
-                              </CardContent>
-                            </Link>
-                            <CardFooter className="mt-auto">
-                              <Button
-                                className="w-full self-end mt-auto pb-2"
-                                onClick={() => handelAddCart(uniqueProduct)}
-                              >
-                                Add to cart
-                              </Button>
-                              <ToastContainer />
-                            </CardFooter>
-                          </Card>
-                        </div>
-                      </>
-                    ))}
-                  </>
-                )}
+              {products && products.some((product) => product.categoryId === cat.id) && (
+                <>
+                  {[
+                    ...new Map(
+                      products
+                        .filter((product) => product.categoryId === cat.id)
+                        .map((filteredProduct) => [filteredProduct.id, filteredProduct])
+                    ).values()
+                  ].map((uniqueProduct) => (
+                    <div key={uniqueProduct.id} className="flex">
+                      <Card className="card flex flex-col w-[250px] h-[450px] bg-[#140802] relative">
+                        <Link to={`/products/${uniqueProduct.id}`}>
+                          <div className="relative">
+                            <img
+                              alt={uniqueProduct.name}
+                              className={`aspect-[4/3] w-full rounded-t-lg object-cover ${
+                                !uniqueProduct.stockId ? "filter grayscale" : ""
+                              }`}
+                              height={300}
+                              src={uniqueProduct.image}
+                              width={400}
+                            />
+                            {!uniqueProduct.stockId && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-t-lg">
+                                <span className="text-white text-xl font-bold">Out of stock</span>
+                              </div>
+                            )}
+                          </div>
+                          <CardContent className="p-4">
+                            <div className="space-y-2">
+                              <CardTitle className="text-lg font-semibold text-[#BD9E82] h-[50px]">
+                                {uniqueProduct.name}
+                              </CardTitle>
+                              {uniqueProduct.stockId && (
+                                <p className="text-sm text-[#FFDAB9] dark:text-gray-400">
+                                  {uniqueProduct.description.slice(0, 30)} ..
+                                </p>
+                              )}
+                            </div>
+                            {uniqueProduct.stockId && (
+                              <span className="font-semibold text-lg text-[#EEEE]">
+                                {uniqueProduct.price}$
+                              </span>
+                            )}
+                          </CardContent>
+                        </Link>
+                        {uniqueProduct.stockId && (
+                          <CardFooter className="mt-auto">
+                            <Button
+                              className="w-full self-end mt-auto pb-2"
+                              onClick={() => handelAddCart(uniqueProduct)}
+                            >
+                              Add to cart
+                            </Button>
+                            <ToastContainer />
+                          </CardFooter>
+                        )}
+                      </Card>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </>
         ))}
