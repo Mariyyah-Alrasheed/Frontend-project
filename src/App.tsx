@@ -21,6 +21,7 @@ import { Checkout } from "./Pages/checkout"
 import { Thankyou } from "./Pages/thankyou"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { ProductByCategory } from "./Pages/productByCategory"
 
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/products/:productId",
     element: <ProductDetails />
+  },
+  {
+    path: "/productsByCategory/:categoryId",
+    element: <ProductByCategory />
   }
 ])
 

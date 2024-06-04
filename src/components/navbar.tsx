@@ -10,8 +10,19 @@ import {
 import logo from "../components/logo.png"
 import { CartDrawer } from "./cart/drawerCart"
 import * as React from "react"
-import { Link } from "lucide-react"
 import { GlobalContext } from "@/App"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from "./ui/sheet"
+import api from "@/api"
+import { Category } from "@/types"
+import { useQuery } from "@tanstack/react-query"
+import { Link } from "react-router-dom"
 
 export function IconWithHover({ children }) {
   const [isHovered, setIsHovered] = React.useState(false)
@@ -39,6 +50,22 @@ export function Navbar() {
     handleRemoveUser()
   }
 
+  const getCategories = async () => {
+    try {
+      const res = await api.get("/categorys")
+      return res.data
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(new Error("Something went wrong"))
+    }
+  }
+
+  // Queries
+  const { data: categories, error: catError } = useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: getCategories
+  })
+
   return (
     <div className="backdrop-blur-lg bg-opacity-30 -mt-30 md:-mt-40 lg:-mt-40 sticky top-0 z-10">
       <nav className="max-w-screen-xl mx-auto py-4 px-6 flex items-center justify-between backdrop-filter backdrop-blur-lg">
@@ -60,18 +87,47 @@ export function Navbar() {
           </ul>
         </div>
         <div className="flex items-center space-x-4">
-          <IconWithHover>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#BD9E82"
-              className="w-3 h-3 md:w-6 md:h-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-            </svg>
-          </IconWithHover>
+          \
+          <Sheet>
+            <SheetTrigger>
+              <IconWithHover>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="#BD9E82"
+                  className="w-3 h-3 md:w-6 md:h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 9h16.5m-16.5 6.75h16.5"
+                  />
+                </svg>
+              </IconWithHover>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle className="font-bold font-serif text-xl">Category</SheetTitle>
+              </SheetHeader>
+              <div className=" m-4 font-bold font-serif">
+                <ul>
+                  {categories?.map((cat) => (
+                    <>
+                      <Link key={cat.id} to={`/productsByCategory/${cat.id}`}>
+                        <div className="m-3">
+                          <li key={cat.id}>
+                            <h3> {cat.name} </h3>
+                          </li>
+                        </div>
+                      </Link>
+                    </>
+                  ))}
+                </ul>
+              </div>
+            </SheetContent>
+          </Sheet>
           <IconWithHover>
             <CartDrawer />
           </IconWithHover>
